@@ -109,8 +109,9 @@
     #define JUCE_DEBUG 1
   #endif
 
+  // MinGW support restored in this fork
   #ifdef __MINGW32__
-    #error "MinGW is not supported. Please use an alternative compiler."
+    #define JUCE_MINGW 1
   #endif
 
   /** If defined, this indicates that the processor is little-endian. */
