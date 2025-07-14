@@ -142,7 +142,13 @@ set(JUCE_INSTALL_DESTINATION "lib/cmake/JUCE-${JUCE_VERSION}" CACHE STRING
 
 set(JUCE_MODULE_PATH "include/JUCE-${JUCE_VERSION}/modules")
 set(UTILS_INSTALL_DIR "${JUCE_INSTALL_DESTINATION}")
-set(JUCEAIDE_PATH "${JUCE_TOOL_INSTALL_DIR}/${JUCE_JUCEAIDE_NAME}")
+
+if(TARGET juceaide)
+    set(JUCEAIDE_PATH "${JUCE_TOOL_INSTALL_DIR}/${JUCE_JUCEAIDE_NAME}")
+else()
+    set(JUCEAIDE_PATH "")
+    message(WARNING "juceaide target not available, JUCEAIDE_PATH will be empty for install config")
+endif()
 configure_package_config_file("${JUCE_CMAKE_UTILS_DIR}/JUCEConfig.cmake.in"
     "${JUCE_BINARY_DIR}/JUCEConfig.cmake"
     PATH_VARS UTILS_INSTALL_DIR JUCEAIDE_PATH JUCE_MODULE_PATH
@@ -150,7 +156,14 @@ configure_package_config_file("${JUCE_CMAKE_UTILS_DIR}/JUCEConfig.cmake.in"
 
 set(JUCE_MODULE_PATH "${JUCE_MODULES_DIR}")
 set(UTILS_INSTALL_DIR "${CMAKE_CURRENT_SOURCE_DIR}/extras/Build/CMake")
-get_target_property(JUCEAIDE_PATH juceaide IMPORTED_LOCATION)
+
+if(TARGET juceaide)
+    get_target_property(JUCEAIDE_PATH juceaide IMPORTED_LOCATION)
+else()
+    set(JUCEAIDE_PATH "")
+    message(WARNING "juceaide target not available, JUCEAIDE_PATH will be empty")
+endif()
+
 configure_package_config_file("${JUCE_CMAKE_UTILS_DIR}/JUCEConfig.cmake.in"
     "${JUCE_BINARY_DIR}/JUCEExportConfig.cmake"
     PATH_VARS UTILS_INSTALL_DIR JUCEAIDE_PATH JUCE_MODULE_PATH
